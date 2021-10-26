@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+    <channel>
+        <title></title>
+        <link>undefined</link>
+        <description>undefined</description>
+        <lastBuildDate>Tue, 26 Oct 2021 18:14:55 GMT</lastBuildDate>
+        <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
+        <generator>Joplin Pages Publisher</generator>
+        <item>
+            <title><![CDATA[GitHub Pages - Setup www and apex for Custom Domain]]></title>
+            <guid>6fc5289658ea43cbb608516a8ed75b67</guid>
+            <pubDate>Mon, 25 Oct 2021 18:31:08 GMT</pubDate>
+            <content:encoded><![CDATA[<h1 id="github-pages-setup-www-and-apex-for-custom-domain">GitHub Pages - Setup www and apex for Custom Domain</h1>
+<p>Add a custom domain name with www and apex (sub-domain-less)DNS entries for a <a title="https://pages.github.com/" href="https://pages.github.com/">GitHub Pages</a> site. GitHub pages are static content hosted on *.github.io domain.</p>
+<p>Why GitHub Pages? It’s free hosting, the deployments are as simply as <code>git push</code>, SSL/TLS certificates are includee, and apex domain redirects (from www to apex) are included.</p>
+<h2 id="configuration">Configuration</h2>
+<ol start="0">
+<li>(optional) <strong>Create an GitHub Organization</strong> so Projects can be more easily shared with others. Useful when multiple people require management  and publishing rights.</li>
+<li><strong>Add a GitHub Project</strong> named <em>user</em>.github.io or <em>organization</em>.github.io to hold the site content.</li>
+<li><strong>Setup DNS at your DNS Provider</strong> so traffic is redirected to GitHub Pages from your domain.
+<ol>
+<li>Visit <em>your DNS provider</em>, not GitHub</li>
+<li><strong>Create A records for apex domain</strong> to direct IPv4 traffic by pointing the apex domain tot GitHub Pages IP addresses:
+<ul>
+<li>185.199.108.153</li>
+<li>185.199.109.153</li>
+<li>185.199.110.153</li>
+<li>185.199.111.153</li>
+</ul>
+</li>
+<li><strong>Create AAAA records for apex domain (IPv6)</strong>, to direct IPv6 traffic by pointing the apex domain tot GitHub Pages IP addresses:
+<ul>
+<li>2606:50c0:8000::153</li>
+<li>2606:50c0:8001::153</li>
+<li>2606:50c0:8002::153</li>
+<li>2606:50c0:8003::153</li>
+</ul>
+</li>
+<li><strong>Create a CNAME record for WWW</strong> to direct traffic from www.&lt;apexdomain&gt; to GitHub Pages.</li>
+<li><strong>Let DNS Propogate</strong> by waiting 15 minutes, then checking DNS with <code>dig</code>, a command-line tool.
+<ol>
+<li><strong>Verify A Records</strong> with dig<div><pre class="hljs"><code>dig venegas.me +noall +answer -t A</code></pre></div>
+dig should find the four A records created above.<div><pre class="hljs"><code>venegas.me.             0       IN      A       185.199.108.153
+venegas.me.             0       IN      A       185.199.109.153
+venegas.me.             0       IN      A       185.199.110.153
+venegas.me.             0       IN      A       185.199.111.153</code></pre></div>
+</li>
+<li><strong>Check AAAA Records</strong> with dig by running the same command above, except replace <code>A</code> with <code>AAAA</code></li>
+<li><strong>Verify the CNAME</strong> against the www entry with  <code>dig</code>. Notice how <code>www</code> is included in this check.<div><pre class="hljs"><code>dig www.venegas.me +nostats +nocomments +nocmd</code></pre></div>
+<code>dig</code> should locate a redirect from the CNAME to *.github.io IP Addresses.<div><pre class="hljs"><code>www.venegas.me.         0       IN      CNAME   venegasme.github.io.
+venegasme.github.io.    0       IN      A       185.199.108.153
+venegasme.github.io.    0       IN      A       185.199.109.153
+venegasme.github.io.    0       IN      A       185.199.110.153
+venegasme.github.io.    0       IN      A       185.199.111.153</code></pre></div>
+</li>
+</ol>
+<div><pre class="hljs"><code></code></pre></div>
+</li>
+<li><strong>Setup the Custom Domain in the GitHub Project</strong> to tell GitHub to start serving traffic. On GitHub, open the *.github.io project and navigate to Settings -&gt; Pages -&gt; Custom Domain. Add <code>yourdomain.tld</code> to add the apex entry, hit save, and fix any errors detected by GitHub.</li>
+<li>Congradulations! Your custom domain should be serving traffic from <a title="http://venegas.me" href="http://venegas.me">http://venegas.me</a>, <a title="https://venegas.me" href="https://venegas.me">https://venegas.me</a>, ,<a title="http://www.venegas.me" href="http://www.venegas.me">http://www.venegas.me</a>&gt;, and even <a title="https://www.venegas.me" href="https://www.venegas.me">https://www.venegas.me</a></li>
+</ol>
+</li>
+</ol>
+]]></content:encoded>
+        </item>
+    </channel>
+</rss>
